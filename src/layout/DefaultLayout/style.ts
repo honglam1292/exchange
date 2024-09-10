@@ -15,6 +15,7 @@ export const DefaultLayoutStyle = {
     display: flex;
     main {
       flex: 1;
+      transition: all 0.25s;
     }
   `,
 };

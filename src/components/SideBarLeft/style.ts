@@ -5,7 +5,7 @@ export const SideBarLeftStyle = {
     max-width: 200px;
     height: 100%;
     overflow: hidden;
-    transition: all 0.5s;
+    transition: all 0.25s;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     display: flex;
     flex-direction: column;

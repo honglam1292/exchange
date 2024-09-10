@@ -14,7 +14,7 @@ function SideBarLeft() {
         setTimeout(() => {
           if (!containerRef.current) return;
           containerRef.current.style.display = "none";
-        }, 500);
+        }, 250);
       }
     } else {
       if (containerRef.current) {
@@ -22,7 +22,7 @@ function SideBarLeft() {
         setTimeout(() => {
           if (!containerRef.current) return;
           containerRef.current.style.transform = "translateX(0px)";
-        }, 100);
+        }, 50);
       }
     }
   }, [open]);
