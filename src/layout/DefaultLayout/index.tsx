@@ -1,11 +1,21 @@
+/** @jsxImportSource @emotion/react */
 import { ModalGroup } from "@/components/ModalGroup";
-import React from "react";
+
+import HeaderPage from "@/components/HeaderPage";
+import SideBarLeft from "@/components/SideBarLeft";
 import { Outlet } from "react-router-dom";
+import { DefaultLayoutStyle } from "./style";
 
 const DefaultLayout = () => {
   return (
-    <div>
-      <Outlet />
+    <div css={DefaultLayoutStyle.index}>
+      <HeaderPage />
+      <div css={DefaultLayoutStyle.content}>
+        <SideBarLeft />
+        <main css={DefaultLayoutStyle.main()}>
+          <Outlet />
+        </main>
+      </div>
       <ModalGroup />
     </div>
   );

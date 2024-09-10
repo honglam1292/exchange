@@ -52,10 +52,14 @@ export const cssReset = css`
   html {
     font-size: 15px;
     ${media.xxl} {
-      font-size: 0.9vw;
+      font-size: 14px;
     }
     ${media.sm} {
       font-size: 13px;
     }
+  }
+  :root {
+    --header-height: 4rem;
+    --sidebar-width: 200px;
   }
 `;
