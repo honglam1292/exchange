@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
-export type KeyModalType = "language" | "";
+export type KeyModalType = "language" | "login" | "";
 
 interface ModalType {
   keyModal: KeyModalType;
