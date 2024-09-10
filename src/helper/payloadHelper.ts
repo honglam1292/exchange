@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import md5 from "md5";
+import { LOCAL, sysLang } from "@/constants/common";
 import { Device } from "@/enums/device";
 import { ApiPayload } from "@/types/api";
+import md5 from "md5";
 
 const agentId = import.meta.env.VITE_AGENT_ID as string;
 const secretKey = import.meta.env.VITE_SECRET_KEY as string;
 
 const hashSignature = (typeName: string | null) =>
   typeName ? md5(agentId + typeName + secretKey) : md5(agentId + secretKey);
+const keyLang = localStorage.getItem(LOCAL.i18nLng) || "en";
+
+const syslanguage = sysLang[keyLang];
 
 export const payloadHelper = (
   methodName: string,
@@ -19,7 +23,7 @@ export const payloadHelper = (
     signature: hashSignature(typeName),
     data,
     method: methodName,
-    syslang: 1,
+    syslang: syslanguage,
     device: Device.WEB,
   };
 
