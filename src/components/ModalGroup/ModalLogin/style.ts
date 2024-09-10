@@ -14,7 +14,7 @@ export const ModalLoginStyle = styled.div`
 
 export const Header = styled.div`
   display: flex;
-  background-color: ${theme.bg.blueDark};
+  background-color: ${theme.bg.black};
   height: 75px;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
@@ -80,7 +80,7 @@ export const BtnLogin = styled.div`
   font-size: 16px;
   line-height: 20px;
   cursor: inherit;
-  background-color: ${theme.bg.blueDark};
+  background-color: ${theme.bg.black};
   color: ${theme.color.white};
   cursor: pointer;
 
