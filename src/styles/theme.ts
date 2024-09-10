@@ -4,8 +4,12 @@ const theme = {
     black08: "rgba(0, 0, 0, .8)",
     gray: "#f8f8f8",
     grayA: "#ededed",
+    white: "#fff",
+    blueDark: "#01013f",
   },
   color: {
+    white: "#fff",
+    black: "#000",
     headTitleColor: "#fff",
     blue: "#55B5FF",
   },
