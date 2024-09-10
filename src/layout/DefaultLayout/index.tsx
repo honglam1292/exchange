@@ -11,7 +11,7 @@ const DefaultLayout = () => {
       <HeaderPage />
       <div css={DefaultLayoutStyle.content}>
         <SideBarLeft />
-        <main>
+        <main css={DefaultLayoutStyle.main()}>
           <Outlet />
         </main>
       </div>

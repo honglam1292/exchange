@@ -1,34 +1,27 @@
 /** @jsxImportSource @emotion/react */
 
 import { useSideBarStore } from "@/stores/sidebarStore";
-import { SideBarLeftStyle } from "./style";
 import { useEffect, useRef } from "react";
+import { SideBarLeftStyle } from "./style";
 
 function SideBarLeft() {
   const { open } = useSideBarStore();
   const containerRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
+    if (!listRef.current) return;
     if (open) {
-      if (containerRef.current) {
-        containerRef.current.style.transform = "translateX(-200px)";
-        setTimeout(() => {
-          if (!containerRef.current) return;
-          containerRef.current.style.display = "none";
-        }, 250);
-      }
+      setTimeout(() => {
+        if (!listRef.current) return;
+        listRef.current.style.display = "block";
+      }, 100);
     } else {
-      if (containerRef.current) {
-        containerRef.current.style.display = "flex";
-        setTimeout(() => {
-          if (!containerRef.current) return;
-          containerRef.current.style.transform = "translateX(0px)";
-        }, 50);
-      }
+      listRef.current.style.display = "none";
     }
   }, [open]);
   return (
-    <div ref={containerRef} css={SideBarLeftStyle.index()}>
-      <div css={SideBarLeftStyle.listMenu}>
+    <div ref={containerRef} css={SideBarLeftStyle.index(open)}>
+      <div ref={listRef} className="list-menu" css={SideBarLeftStyle.listMenu}>
         <div className="account-detail">账号详情</div>
       </div>
     </div>
