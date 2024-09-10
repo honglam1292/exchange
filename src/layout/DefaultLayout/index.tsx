@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import { ModalGroup } from "@/components/ModalGroup";
 
 import HeaderPage from "@/components/HeaderPage";
 import SideBarLeft from "@/components/SideBarLeft";
@@ -12,7 +13,7 @@ const DefaultLayout = () => {
       <HeaderPage />
       <div css={DefaultLayoutStyle.content}>
         <SideBarLeft />
-        <main>
+        <main css={DefaultLayoutStyle.main()}>
           <Outlet />
         </main>
       </div>

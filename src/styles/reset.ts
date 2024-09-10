@@ -60,5 +60,6 @@ export const cssReset = css`
   }
   :root {
     --header-height: 4rem;
+    --sidebar-width: 200px;
   }
 `;

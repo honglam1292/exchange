@@ -1,10 +1,11 @@
-import * as React from "react";
+import { ModalLanguage } from "./ModalLanguage";
 import { ModalLogin } from "./ModalLogin";
 
-export function ModalGroup() {
+export const ModalGroup = () => {
   return (
     <>
+      <ModalLanguage />
       <ModalLogin />
     </>
   );
-}
+};

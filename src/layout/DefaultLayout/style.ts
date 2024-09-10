@@ -13,9 +13,8 @@ export const DefaultLayoutStyle = {
   content: css`
     flex: 1 1;
     display: flex;
-    main {
-      flex: 1;
-      transition: all 0.25s;
-    }
+  `,
+  main: () => css`
+    flex: 1;
   `,
 };

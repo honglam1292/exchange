@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 
 export const SideBarLeftStyle = {
-  index: () => css`
+  index: (open: boolean) => css`
     max-width: 200px;
     height: 100%;
     overflow: hidden;
@@ -9,7 +9,7 @@ export const SideBarLeftStyle = {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
     display: flex;
     flex-direction: column;
-    width: 20rem;
+    width: ${open ? "var(--sidebar-width)" : "0px"};
   `,
   listMenu: css`
     flex: 1;
