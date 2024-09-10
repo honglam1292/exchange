@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import { ModalGroup } from "@/components/ModalGroup";
 
 import HeaderPage from "@/components/HeaderPage";
 import SideBarLeft from "@/components/SideBarLeft";
@@ -15,6 +16,7 @@ const DefaultLayout = () => {
           <Outlet />
         </main>
       </div>
+      <ModalGroup />
     </div>
   );
 };
