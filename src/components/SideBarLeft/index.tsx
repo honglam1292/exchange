@@ -23,6 +23,7 @@ function SideBarLeft() {
     <div ref={containerRef} css={SideBarLeftStyle.index(open)}>
       <div ref={listRef} className="list-menu" css={SideBarLeftStyle.listMenu}>
         <div className="account-detail">账号详情</div>
+        <div className="account-detail">用户信息</div>
       </div>
     </div>
   );
