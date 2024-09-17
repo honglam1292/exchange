@@ -5,6 +5,7 @@ export const LOCAL = {
   SYSLANG: "SYSLANG",
   i18nLng: "i18nLng",
   i18nextLng: "i18nextLng",
+  auth: "auth"
 };
 
 type SysLangStringType = {
