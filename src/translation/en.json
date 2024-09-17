@@ -1,5 +1,30 @@
 {
   "language": {
-    "Language": "Language"
+    "Language": "Language123"
+  },
+  "homepage": {
+    "homepage": "Home",
+    "accountName": "Account Name",
+    "accountBalance": "Account balance",
+    "date":"Date",
+    "type":"Type",
+    "transferType":"Transfer Type",
+    "exchangeRate":"Exchange rate",
+    "amount":"Amount",
+    "fee":"Fee",
+    "status":"Status",
+    "destinationCountry": "Destination Country",
+    "transfer": "Transfer",
+    "collection": "Collection",
+    "currencyExchangeRate": "Currency Exchage Rate",
+    "handlingFee": "Handling Fee",
+    "reviewDate":"Review Date",
+    "totalLimit": "Total limit",
+    "totalAmount": "Total Amount",
+    "submitRequest": "Submit Request",
+    "from": "From",
+    "to": "To",
+    "wasUpdatedOn": "was updated on",
+    "query": "Query"
   }
 }
