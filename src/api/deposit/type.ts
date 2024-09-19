@@ -55,9 +55,9 @@ export interface DepositType {
 
 export interface DepositBody {
   username: string;
-  currency_id: string;
-  bank_account_id: string;
-  amount: number;
+  from_currency_id: string;
+  to_currency_id: string;
+  amount: number | string;
 }
 
 export interface DepositResponse extends ApiResponse {

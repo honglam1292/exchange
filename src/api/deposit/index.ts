@@ -24,4 +24,11 @@ export const DepositApi = {
     );
     return data;
   },
+  async submitDeposit(payload: DepositBody) {
+    const { data } = await axiosRequest.post<DepositResponse>(
+      "",
+      payloadHelper("Deposit", payload.username, payload)
+    );
+    return data;
+  },
 };

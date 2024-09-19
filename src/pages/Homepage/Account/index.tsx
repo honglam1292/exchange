@@ -1,8 +1,11 @@
+import { useUserToken } from "@/stores/authStore";
 import { Box } from "@mui/material"
 import { useTranslation } from "react-i18next";
 
 const Account = () => {
   const { t } = useTranslation("homepage");
+  const username = useUserToken((state) => state.username);
+
   return <Box px={2} py={2} borderRadius={1} bgcolor={"white"} display={"flex"}>
     <Box display={"flex"} gap={2} flex={1}>
       <Box
@@ -17,7 +20,7 @@ const Account = () => {
           {t("accountName")}
         </Box>
         <Box>
-          0907987263
+          {username}
         </Box>
       </Box>
     </Box>

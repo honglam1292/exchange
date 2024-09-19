@@ -53,7 +53,7 @@ export const HeaderPageStyle = {
     .avatar {
       width: 3rem;
       height: 3rem;
-      background: #d0d0d0;
+      // background: #d0d0d0;
       border-radius: 3rem;
       margin-left: 1.5rem;
     }

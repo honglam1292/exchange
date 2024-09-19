@@ -1,4 +1,4 @@
-import { Box, Button, Input, MenuItem, Select, TextField } from "@mui/material"
+import { Box, Button, MenuItem, Select, TextField } from "@mui/material"
 import { useTranslation } from "react-i18next";
 import exchange from './exchange.png';
 import dayjs from "dayjs";
@@ -7,6 +7,7 @@ import { DepositApi } from "@/api/deposit";
 import { ResponseCode } from "@/constants/response";
 import { useEffect, useState } from "react";
 import { FromCurrency, ToCurrency } from "@/api/deposit/type";
+import { useAlert } from "@/hooks/useAlert";
 
 const CurrencyConvert = () => {
   const { t } = useTranslation("homepage");
@@ -14,14 +15,14 @@ const CurrencyConvert = () => {
   const [from, setFrom] = useState<FromCurrency>();
   const [to, setTo] = useState<ToCurrency>();
   const [toList, setToList] = useState<ToCurrency[]>([])
-  const [amount, setAmount] = useState<number>()
+  const [amount, setAmount] = useState<number | string>()
   const username = useUserToken((state) => state.username);
+  const alert = useAlert();
 
   const getSettings = async () => {
     const data = { username };
     try {
       const response = await DepositApi.getDepositSetting(data);
-      console.log('response', response)
       if (response.status === ResponseCode.SUCCESS) {
         const list = response.data.currencies;
         setCurrencyList(list);
@@ -29,18 +30,50 @@ const CurrencyConvert = () => {
     } catch (error) {
     }
   };
+
+  const resetData = () => {
+    setAmount("");
+    setFrom(undefined);
+    setTo(undefined);
+  }
+
+  const submitConvert = async () => {
+    if (!amount || !from || !to) {
+      return
+    }
+    const data = {
+      username,
+      amount,
+      from_currency_id: from?.currency_id,
+      to_currency_id: to?.currency_id,
+    };
+    try {
+      const response = await DepositApi.submitDeposit(data);
+      if (response.status === ResponseCode.SUCCESS) {
+        alert.showAlert(response.msg, "success");
+        resetData();
+      } else {
+        alert.showAlert(response.msg, "error")
+      }
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) {
+        alert.showAlert(error.message, "error");
+      }
+    }
+  };
+
   useEffect(() => {
     getSettings();
   }, []);
 
   const renderValue = (currency?: ToCurrency | FromCurrency) => {
     if (!currency) return null;
-    return <Box display={"flex"} gap={1}>
+    return <Box display={"flex"} gap={1} mb={0.5}>
       <img width={"48px"} src={currency.picture} />
       <Box lineHeight={2}>{currency?.currency_name}</Box>
     </Box>
   }
-
   const handleChangeFromTo = () => {
     const newFrom = currencyList.find(c => c.currency_id === to?.currency_id);
     const newTo = newFrom?.exchange_rates_list.find(i => i.currency_id === from?.currency_id);
@@ -62,7 +95,7 @@ const CurrencyConvert = () => {
         <TextField
           inputProps={{
             style: {
-              height: 10,
+              height: 20,
             },
           }}
           variant="outlined"
@@ -88,6 +121,9 @@ const CurrencyConvert = () => {
                 setFrom(c)
                 setToList(c?.exchange_rates_list || [])
               }}
+              style={{
+                height: 48,
+              }}
             >
               {currencyList.map(currency => {
                 return <MenuItem value={currency.currency_id}>{currency.currency_name}</MenuItem>
@@ -100,6 +136,9 @@ const CurrencyConvert = () => {
         <Box flex={1}>
           <Box mb={1}>{t("to")}</Box>
           <Select
+            style={{
+              height: 48,
+            }}
             value={to?.currency_id}
             label="destinationCountry"
             fullWidth
@@ -123,7 +162,7 @@ const CurrencyConvert = () => {
     <Box display={"flex"} justifyContent={"space-between"}>
       {amount && from && to ? <Box>
         <Box>{`${amount} ${from?.currency_code} =`}</Box>
-        <Box sx={{ fontSize: 16, fontWeight: 700, mt: 0.5 }}>{`${amount * valueOf1From} ${to.currency_code}`}</Box>
+        <Box sx={{ fontSize: 16, fontWeight: 700, mt: 0.5 }}>{`${Number(amount) * valueOf1From} ${to.currency_code}`}</Box>
         <Box sx={{ ml: 2, fontSize: 12, color: '#C0C0C0', mt: 0.5 }}>
           <Box>1 {from.currency_code} = {valueOf1From} {to.currency_code}</Box>
           <Box >1 {to.currency_code} = {valueOf1To} {from.currency_code}</Box>
@@ -131,7 +170,7 @@ const CurrencyConvert = () => {
       </Box> : <Box></Box>}
       {from && to ? <Box textAlign={"right"}>
         <Box>{from?.currency_code} {t("to").toLowerCase()} {to?.currency_code} {t("wasUpdatedOn")} {dayjs(new Date()).format('MMM DD, YYYY, HH:mm')}  UTC</Box>
-        <Button variant="contained" sx={{ mt: 1 }}>{t("query")}</Button>
+        <Button variant="contained" sx={{ mt: 1 }} disabled={!amount || !from || !to} onClick={submitConvert}>{t("query")}</Button>
       </Box> : null}
     </Box>
   </Box >
