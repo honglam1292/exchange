@@ -7,7 +7,6 @@ import { DepositApi } from "@/api/deposit";
 import { ResponseCode } from "@/constants/response";
 import { useEffect, useState } from "react";
 import { FromCurrency, ToCurrency } from "@/api/deposit/type";
-import { useAlert } from "@/hooks/useAlert";
 
 interface ICurrencyConvert {
   setFromCurrency: (from?: FromCurrency) => void;
@@ -22,7 +21,6 @@ const CurrencyConvert = ({ setFromCurrency, setToCurrency, setSendAmount }: ICur
   const [toList, setToList] = useState<ToCurrency[]>([])
   const [amount, setAmount] = useState<number | string>()
   const username = useUserToken((state) => state.username);
-  const alert = useAlert();
 
   const getSettings = async () => {
     const data = { username };
@@ -35,12 +33,6 @@ const CurrencyConvert = ({ setFromCurrency, setToCurrency, setSendAmount }: ICur
     } catch (error) {
     }
   };
-
-  const resetData = () => {
-    setAmount("");
-    setFrom(undefined);
-    setTo(undefined);
-  }
 
   const submitConvert = async () => {
     setFromCurrency(from);

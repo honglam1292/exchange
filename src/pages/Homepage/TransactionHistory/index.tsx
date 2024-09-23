@@ -17,18 +17,6 @@ import dayjs from "dayjs";
 const TransactionHistory = () => {
   const { t } = useTranslation("homepage");
   const [depositList, setDesopotList] = useState<DepositDetail[]>([]);
-  const mockData = [
-    {
-      "id": "1",
-      "date": "01/01/2021",
-      "type": "Type",
-      "transferType": "Transfer Type",
-      "exchangeRate": "Exchange rate",
-      "amount": "1000",
-      "fee": "10",
-      "status": "Active"
-    }
-  ]
   const username = useUserToken((state) => state.username);
 
   const getData = async () => {

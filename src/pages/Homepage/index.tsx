@@ -19,7 +19,7 @@ const Homepage = () => {
       <CurrencyConvert {...{ setFromCurrency, setToCurrency, setSendAmount }} />
       <TransactionHistory />
     </Box>
-    <Box flexBasis={400}><MakeOrder from={fromCurrency} to={toCurrency} amount={sendAmount} /></Box>
+    {fromCurrency && toCurrency ? <Box flexBasis={400}><MakeOrder from={fromCurrency} to={toCurrency} amount={sendAmount} /></Box> : null}
   </Box>;
 };
 

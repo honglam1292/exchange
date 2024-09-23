@@ -3,6 +3,8 @@
     "Language": "Language123"
   },
   "homepage": {
+    "currencyExchange": "Currency Exchange",
+    "accountDetails": "Account Detail",
     "homepage": "Home",
     "accountName": "Account Name",
     "accountBalance": "Account balance",
@@ -21,6 +23,7 @@
     "reviewDate":"Review Date",
     "totalLimit": "Total limit",
     "totalAmount": "Total Amount",
+    "conversionAmount": "Conversion Amount",
     "submitRequest": "Submit Request",
     "from": "From",
     "to": "To",

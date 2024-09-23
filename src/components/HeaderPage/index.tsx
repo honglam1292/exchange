@@ -4,8 +4,11 @@ import { useSideBarStore } from "@/stores/sidebarStore";
 import { HeaderPageStyle } from "./style";
 import { useUserToken } from "@/stores/authStore";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AuthApi } from "@/api/auth";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { PATH } from "@/constants/path";
 
 function HeaderPage() {
   const { open, onOpen } = useSideBarStore();
@@ -17,6 +20,14 @@ function HeaderPage() {
   const setProfile = useUserToken((state) => state.setProfile);
 
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const openMenu = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleLogout = () => {
     setUsername("");
@@ -38,16 +49,31 @@ function HeaderPage() {
       <div onClick={() => onOpen(!open)} css={HeaderPageStyle.menuBtn(open)}>
         <i className="fa-solid fa-align-right"></i>
       </div>
-      <div css={HeaderPageStyle.content} onClick={handleLogout}>
+      <div css={HeaderPageStyle.content}>
         <div className="account">
-          <p>Admin</p>
+          <p>{profile?.full_name}</p>
           <p>0.00$</p>
         </div>
         {/* <img className="avatar" src={profile?.avatar} alt="" /> */}
-        <img className="avatar" src={"https://i.pravatar.cc/300"} alt="" />
-        <div className="down-menu">
+        <img className="avatar" src={profile?.avatar || "https://i.pravatar.cc/300"} alt="" />
+        <div className="down-menu" onClick={handleClick}>
           <i className="fa-solid fa-caret-down"></i>
         </div>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={openMenu}
+          onClose={handleClose}
+          MenuListProps={{
+            'aria-labelledby': 'basic-button',
+          }}
+        >
+          <MenuItem onClick={() => {
+            handleClose()
+            navigate(PATH.inforUser)
+          }}>Profile</MenuItem>
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        </Menu>
       </div>
     </div>
   );

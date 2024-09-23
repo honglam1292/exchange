@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
 
 import { useModalStore } from "@/stores/modalStore";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 
 const Login = () => {
   const openModal = useModalStore((state) => state.openModal);
 
   return (
-    <div>
-      <Button variant="contained" sx={{ mt: 1 }} onClick={() => openModal("login")}>Login</Button>
-    </div>
+    <Box sx={{ textAlign: "center", paddingTop: "30vh"}}>
+      <Button variant="contained" sx={{ mt: 1, width: 100 }} onClick={() => openModal("login")}>Login</Button>
+    </Box>
   );
 };
 

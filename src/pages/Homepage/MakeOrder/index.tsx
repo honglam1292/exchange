@@ -1,7 +1,6 @@
-import { Box, Button } from "@mui/material"
+import { Box, Button, MenuItem, TextField } from "@mui/material"
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useState } from "react";
-import MenuItem from '@mui/material/MenuItem';
 import { useTranslation } from "react-i18next";
 import downIcon from './down.png';
 import { DepositApi } from "@/api/deposit";
@@ -9,16 +8,30 @@ import { ResponseCode } from "@/constants/response";
 import { useAlert } from "@/hooks/useAlert";
 import { useUserToken } from "@/stores/authStore";
 import { FromCurrency, ToCurrency } from "@/api/deposit/type";
+import Modal from '@mui/material/Modal';
+import exchange from '../CurrencyConvert/exchange.png';
 
+const style = {
+  position: 'absolute' as 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 600,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 interface IMakeOrder {
   amount?: number | string;
-  from?: FromCurrency;
-  to?: ToCurrency;
+  from: FromCurrency;
+  to: ToCurrency;
 }
 const MakeOrder = ({ amount, from, to }: IMakeOrder) => {
   const { t } = useTranslation("homepage");
   const alert = useAlert();
   const username = useUserToken((state) => state.username);
+  const [open, setOpen] = useState(false);
 
   const [destinationCountry, setDestinationCountry] = useState<string>("US");
 
@@ -49,16 +62,18 @@ const MakeOrder = ({ amount, from, to }: IMakeOrder) => {
       if (error instanceof Error) {
         alert.showAlert(error.message, "error");
       }
+    } finally {
+      setOpen(false);
     }
   };
-
-  const renderValue = (value: string) => {
-    return <Box display={"flex"} gap={1}>
-      <img width={"48px"} src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Flag_of_the_People%27s_Republic_of_China.svg/320px-Flag_of_the_People%27s_Republic_of_China.svg.png" />
-      <Box lineHeight={2}>{value}</Box>
+  const renderValue = (currency?: ToCurrency | FromCurrency) => {
+    if (!currency) return null;
+    return <Box display={"flex"} gap={1} mb={0.5}>
+      <img width={"48px"} src={currency.picture} />
+      <Box lineHeight={2}>{currency?.currency_name}</Box>
     </Box>
   }
-  const rate = from?.exchange_rates_list.find(c => c.currency_id === to?.currency_id)?.exchange_rate
+  const rate = Number(from?.exchange_rates_list.find(c => c.currency_id === to?.currency_id)?.exchange_rate) || 0
 
   const renderValueCurrency = (isFrom?: boolean) => {
     const currency = isFrom ? from : to;
@@ -126,9 +141,93 @@ const MakeOrder = ({ amount, from, to }: IMakeOrder) => {
         <Box>$1000,000</Box>
       </Box>
       <Box>
-        <Button variant="contained" onClick={submitConvert}>{t("submitRequest")}</Button>
+        <Button variant="contained" onClick={() => setOpen(true)}>{t("submitRequest")}</Button>
       </Box>
     </Box>
+    <Modal
+      open={open}
+      onClose={() => setOpen(false)}
+    >
+      <Box sx={style}>
+        <Box flex={2} display={"flex"} width={"100%"} gap={1}>
+          <Box display={"flex"} flex={1}>
+            <Box width={"100%"}>
+              <Box mb={1}>{t("from")}</Box>
+              <Select
+                value={from?.currency_id}
+                label="destinationCountry"
+                fullWidth
+                sx={{ '& legend': { display: 'none' } }}
+                renderValue={() => renderValue(from)}
+                size='small'
+                disabled
+                style={{
+                  height: 48,
+                }}
+              >
+                <MenuItem value={from.currency_id}>{from.currency_name}</MenuItem>
+              </Select>
+            </Box>
+          </Box>
+          <Box flexBasis={24} mt={4} sx={{ cursor: "pointer" }}><img height={"24px"} src={exchange} /> </Box>
+          <Box flex={1}>
+            <Box mb={1}>{t("to")}</Box>
+            <Select
+              style={{
+                height: 48,
+              }}
+              value={to?.currency_id}
+              label="destinationCountry"
+              fullWidth
+              sx={{ '& legend': { display: 'none' } }}
+              renderValue={() => renderValue(to)}
+              size='small'
+              disabled
+            >
+              <MenuItem value={to.currency_id}>{to.currency_name}</MenuItem>
+            </Select>
+          </Box>
+        </Box>
+        <Box flex={1} mt={2}>
+          <Box mb={0.5}>{t("conversionAmount")}</Box>
+          <TextField
+            inputProps={{
+              style: {
+                height: 20,
+              },
+            }}
+            variant="outlined"
+            fullWidth
+            value={`${from.currency_symbol} ${amount}`}
+            disabled
+          />
+        </Box>
+        <Box flex={1} mt={2}>
+          <Box mb={0.5}>{t("exchangeRate")}</Box>
+          <TextField
+            inputProps={{
+              style: {
+                height: 20,
+              },
+            }}
+            variant="outlined"
+            fullWidth
+            value={rate}
+            disabled
+          />
+        </Box>
+        <Box sx={{ borderTop: "1px solid #F0F0F0", my: 3 }} />
+        <Box display={"flex"} justifyContent={"space-between"}>
+          <Box>
+            <Box>{t("totalLimit")}</Box>
+            <Box>$1000.000</Box>
+          </Box>
+          <Box>
+            <Button variant="contained" onClick={submitConvert}>{t("submitRequest")}</Button>
+          </Box>
+        </Box>
+      </Box>
+    </Modal>
   </Box>
 }
 

@@ -5,13 +5,16 @@ import HeaderPage from "@/components/HeaderPage";
 import SideBarLeft from "@/components/SideBarLeft";
 import { Outlet } from "react-router-dom";
 import { DefaultLayoutStyle } from "./style";
+import { useUserToken } from "@/stores/authStore";
 
 const DefaultLayout = () => {
+  const isAuth = useUserToken((state) => state.isAuth);
+
   return (
     <div css={DefaultLayoutStyle.index}>
-      <HeaderPage />
+      {isAuth ? <HeaderPage /> : null}
       <div css={DefaultLayoutStyle.content}>
-        <SideBarLeft />
+        {isAuth ? <SideBarLeft /> : null}
         <main css={DefaultLayoutStyle.main()}>
           <Outlet />
         </main>
