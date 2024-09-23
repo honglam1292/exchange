@@ -9,7 +9,12 @@ import { useEffect, useState } from "react";
 import { FromCurrency, ToCurrency } from "@/api/deposit/type";
 import { useAlert } from "@/hooks/useAlert";
 
-const CurrencyConvert = () => {
+interface ICurrencyConvert {
+  setFromCurrency: (from?: FromCurrency) => void;
+  setToCurrency: (to?: ToCurrency) => void;
+  setSendAmount: (amount?: string | number) => void
+}
+const CurrencyConvert = ({ setFromCurrency, setToCurrency, setSendAmount }: ICurrencyConvert) => {
   const { t } = useTranslation("homepage");
   const [currencyList, setCurrencyList] = useState<FromCurrency[]>([]);
   const [from, setFrom] = useState<FromCurrency>();
@@ -38,29 +43,10 @@ const CurrencyConvert = () => {
   }
 
   const submitConvert = async () => {
-    if (!amount || !from || !to) {
-      return
-    }
-    const data = {
-      username,
-      amount,
-      from_currency_id: from?.currency_id,
-      to_currency_id: to?.currency_id,
-    };
-    try {
-      const response = await DepositApi.submitDeposit(data);
-      if (response.status === ResponseCode.SUCCESS) {
-        alert.showAlert(response.msg, "success");
-        resetData();
-      } else {
-        alert.showAlert(response.msg, "error")
-      }
-    } catch (error) {
-      console.log(error);
-      if (error instanceof Error) {
-        alert.showAlert(error.message, "error");
-      }
-    }
+    setFromCurrency(from);
+    setToCurrency(to);
+    setSendAmount(amount);
+    return;
   };
 
   useEffect(() => {

@@ -69,3 +69,25 @@ export interface GatewayDepositResponse extends ApiResponse {
   msg: string;
   status: number
 }
+
+export interface DepositDetailResponse extends ApiResponse {
+  data: DepositDetail[];
+}
+
+export type DepositDetail = {
+  deposit_id: string;
+  transaction_code: string;
+  created_date: string;
+  amount_from: string;
+  amount_to: string;
+  from_currency_code: string;
+  to_currency_code: string;
+  to_currency_rate: string;
+  bank_name: string;
+  bank_account_name: string;
+  bank_account_no: string;
+  transfer_bill: string;
+  remark: string;
+  status: string;
+  status_name: string;
+}

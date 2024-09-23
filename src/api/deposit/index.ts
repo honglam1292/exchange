@@ -1,6 +1,6 @@
 import { payloadHelper } from "@/helper/payloadHelper";
 import axiosRequest from "..";
-import { DepositBody, DepositResponse, GatewayDepositResponse } from "./type";
+import { DepositBody, DepositDetailResponse, DepositResponse, GatewayDepositResponse } from "./type";
 
 export const DepositApi = {
   async deposit(payload: DepositBody) {
@@ -28,6 +28,13 @@ export const DepositApi = {
     const { data } = await axiosRequest.post<DepositResponse>(
       "",
       payloadHelper("Deposit", payload.username, payload)
+    );
+    return data;
+  },
+  async getDepositList(payload: { username: string }) {
+    const { data } = await axiosRequest.post<DepositDetailResponse>(
+      "",
+      payloadHelper("DepositDetail", payload.username, payload)
     );
     return data;
   },
