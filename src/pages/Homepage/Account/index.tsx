@@ -24,14 +24,14 @@ const Account = () => {
         </Box>
       </Box>
     </Box>
-    <Box flex={1} lineHeight={"1.5rem"} fontWeight={700}>
+    {/* <Box flex={1} lineHeight={"1.5rem"} fontWeight={700}>
       <Box>
         {t("accountBalance")}
       </Box>
       <Box>
         $ 1500,000
       </Box>
-    </Box>
+    </Box> */}
   </Box>
 }
 
