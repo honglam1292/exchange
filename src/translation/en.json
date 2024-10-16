@@ -23,11 +23,15 @@
     "reviewDate":"Review Date",
     "totalLimit": "Total limit",
     "totalAmount": "Total Amount",
-    "conversionAmount": "Conversion Amount",
+    "conversionAmount": "Conversion amount",
     "submitRequest": "Submit Request",
     "from": "From",
     "to": "To",
     "wasUpdatedOn": "was updated on",
-    "query": "Query"
+    "query": "Query",
+    "bankName": "Bank name",
+    "bankAccountName":"Bank account name",
+    "bankAccountNumber":"Bank account number",
+    "isRequired":"is required"
   }
 }

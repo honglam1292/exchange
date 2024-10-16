@@ -26,29 +26,73 @@ interface IMakeOrder {
   amount?: number | string;
   from: FromCurrency;
   to: ToCurrency;
+  reset: () => void;
 }
-const MakeOrder = ({ amount, from, to }: IMakeOrder) => {
+const MakeOrder = ({ amount, from, to, reset }: IMakeOrder) => {
   const { t } = useTranslation("homepage");
   const alert = useAlert();
   const username = useUserToken((state) => state.username);
   const [open, setOpen] = useState(false);
+  const [bankInfo, setBankInfo] = useState({
+    player_bank_name: "",
+    player_bank_account_name: "",
+    player_bank_account_no: "",
+  })
+  const [error, setError] = useState({
+    player_bank_name: "",
+    player_bank_account_name: "",
+    player_bank_account_no: ""
+  });
 
   const [destinationCountry, setDestinationCountry] = useState<string>("US");
-
 
   const handleChangeCountry = (event: SelectChangeEvent) => {
     setDestinationCountry(event.target.value as string);
   };
 
+  const validateBankInfo = () => {
+    const { player_bank_name, player_bank_account_name, player_bank_account_no } = bankInfo;
+    const bankInfoError = {
+      player_bank_name: player_bank_name ? "" : `${t("bankName")} ${t("isRequired")}`,
+      player_bank_account_name: player_bank_account_name ? "" : `${t("bankName")} ${t("isRequired")}`,
+      player_bank_account_no: player_bank_account_no ? "" : `${t("bankName")} ${t("isRequired")}`,
+    };
+    const isError = Object.values(bankInfoError).some(value => value);
+    if (isError) {
+      setError(bankInfoError);
+      return false;
+    }
+    return true;
+  }
+
+  const resetData = () => {
+    setBankInfo({
+      player_bank_name: "",
+      player_bank_account_name: "",
+      player_bank_account_no: "",
+    })
+    setError({
+      player_bank_name: "",
+      player_bank_account_name: "",
+      player_bank_account_no: ""
+    });
+    reset();
+  }
+
   const submitConvert = async () => {
-    if (!amount || !from || !to) {
+    if (!amount || !from || !to || !validateBankInfo()) {
       return
     }
+    const { player_bank_name, player_bank_account_name, player_bank_account_no } = bankInfo;
+
     const data = {
       username,
       amount,
       from_currency_id: from?.currency_id,
       to_currency_id: to?.currency_id,
+      player_bank_name,
+      player_bank_account_name,
+      player_bank_account_no
     };
     try {
       const response = await DepositApi.submitDeposit(data);
@@ -63,6 +107,7 @@ const MakeOrder = ({ amount, from, to }: IMakeOrder) => {
         alert.showAlert(error.message, "error");
       }
     } finally {
+      resetData();
       setOpen(false);
     }
   };
@@ -123,17 +168,9 @@ const MakeOrder = ({ amount, from, to }: IMakeOrder) => {
       <MenuItem value={"cn"}>Chinese</MenuItem> */}
     </Select>
 
-    <Box display={"flex"} justifyContent={"space-between"} mt={3}>
+    <Box display={"flex"} justifyContent={"space-between"} my={3}>
       <Box>{t("currencyExchangeRate")}:</Box>
       <Box>{rate * 100}%</Box>
-    </Box>
-    <Box display={"flex"} justifyContent={"space-between"} my={0.5}>
-      <Box>{t("reviewDate")}:</Box>
-      <Box>0.00</Box>
-    </Box>
-    <Box display={"flex"} justifyContent={"space-between"} mb={2}>
-      <Box>{t("totalLimit")}:</Box>
-      <Box>usually 3 working days</Box>
     </Box>
     <Box borderTop={"1px solid #D0D0D0"} mx={2} display={"flex"} justifyContent={"space-between"} pt={1.5}>
       <Box>
@@ -216,12 +253,63 @@ const MakeOrder = ({ amount, from, to }: IMakeOrder) => {
             disabled
           />
         </Box>
+        <Box flex={1} mt={2}>
+          <Box mb={0.5}>{t("bankName")}</Box>
+          <TextField
+            variant="outlined"
+            fullWidth
+            value={bankInfo.player_bank_name}
+            onChange={(v) => {
+              setBankInfo({ ...bankInfo, player_bank_name: v.target.value });
+              setError({ ...error, player_bank_name: v.target.value ? "" : `${t("bankName")} ${t("isRequired")}` });
+            }}
+            error={!!error.player_bank_name}
+            helperText={error.player_bank_name}
+            FormHelperTextProps={{
+              style: { marginLeft: 0 },
+            }}
+          />
+        </Box>
+        <Box flex={1} mt={2}>
+          <Box mb={0.5}>{t("bankAccountName")}</Box>
+          <TextField
+            variant="outlined"
+            fullWidth
+            value={bankInfo.player_bank_account_name}
+            onChange={(v) => {
+              setBankInfo({ ...bankInfo, player_bank_account_name: v.target.value });
+              setError({ ...error, player_bank_account_name: v.target.value ? "" : `${t("bankName")} ${t("isRequired")}` });
+            }}
+            error={!!error.player_bank_account_name}
+            helperText={error.player_bank_account_name}
+            FormHelperTextProps={{
+              style: { marginLeft: 0 },
+            }}
+          />
+        </Box>
+        <Box flex={1} mt={2}>
+          <Box mb={0.5}>{t("bankAccountNumber")}</Box>
+          <TextField
+            variant="outlined"
+            fullWidth
+            value={bankInfo.player_bank_account_no}
+            onChange={(v) => {
+              setBankInfo({ ...bankInfo, player_bank_account_no: v.target.value });
+              setError({ ...error, player_bank_account_no: v.target.value ? "" : `${t("bankName")} ${t("isRequired")}` });
+            }}
+            error={!!error.player_bank_account_no}
+            helperText={error.player_bank_account_no}
+            FormHelperTextProps={{
+              style: { marginLeft: 0 },
+            }}
+          />
+        </Box>
         <Box sx={{ borderTop: "1px solid #F0F0F0", my: 3 }} />
         <Box display={"flex"} justifyContent={"space-between"}>
-          <Box>
+          {/* <Box>
             <Box>{t("totalLimit")}</Box>
             <Box>$1000.000</Box>
-          </Box>
+          </Box> */}
           <Box>
             <Button variant="contained" onClick={submitConvert}>{t("submitRequest")}</Button>
           </Box>
